@@ -8,7 +8,6 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var flash = require('connect-flash');
-
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
@@ -37,20 +36,18 @@ app.use('/', routes);
 app.use('/users', users);
 
 // passport config
-var Account = require('./models/account');
+var Account = require('./models/account.js');
 passport.use(new LocalStrategy(Account.authenticate()));
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
 // mongoose
-mongoose.connect('mongodb://<dbuser>:<dbpassword>@novus.modulusmongo.net:27017/<dbName>');
-//mongoose.connect('mongodb://localhost/login');
-
-// passport config
-var Account = require('./models/account');
-passport.use(new LocalStrategy(Account.authenticate()));
-passport.serializeUser(Account.serializeUser());
-passport.deserializeUser(Account.deserializeUser());
+mongoose.connect('mongodb://localhost/passport_local_mongoose_express4', function(err) {
+  if (err) {
+    console.log('No se pudo conectar a MongoDB en el servidor local. Asegúrese de que ha MongoDB ejecuta en el servidor local y mongodb acepta conexiones en puertos estándar!');
+  }
+  else {console.log('Conectado a MongoDB');}
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
