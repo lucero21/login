@@ -1,8 +1,17 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
-
+center{
+  padding: 50px;
+}
+div.botonInicio {
+  padding-left: 1260px;
+  font: 15px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
 a {
   color: #00B7FF;
+}
+a.registrar{
+  color:#2F6FAD;
+  font: 20px "Lucida Grande", Helvetica, Arial, sans-serif;
 }

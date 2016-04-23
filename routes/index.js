@@ -13,10 +13,15 @@ router.get('/register', function(req, res) {
 });
 
 router.post('/register', function(req, res) {
-  Account.register(new Account({ username : req.body.username }), req.body.password, req.body.email, function(err, account) {
+  console.log("se va ha agregar la cuenta");
+  var cuenta=new Account({ username : req.body.username, edad:req.body.edad, pais:req.body.pais, email: req.body.email});
+  console.log(cuenta.username);
+  Account.register(cuenta, req.body.password, function(err, account) {
     if (err) {
       return res.render("register", {info: "Sorry. That username already exists. Try again."});
     }
+
+    console.log("registrado sin error");
     passport.authenticate('local')(req, res, function () {
       res.redirect('/');
     });
