@@ -15,3 +15,7 @@ a.registrar{
   color:#2F6FAD;
   font: 20px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
+div.botonSalir{
+  padding-left: 1100px;
+  font: 15px "Lucida Grande", Helvetica, Arial, sans-serif;
+}

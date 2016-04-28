@@ -7,5 +7,8 @@ block content
       a(href="/login")
         input(type="button",value="Iniciar Sesion")
   if (user)
-      p Bienvenid@ a la pagina #{user.username}
-      a(href="/logout") Logout
+    div.botonSalir
+      p.user Bienvenid@ a la pagina #{user.username}
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        a(href="/logout")
+          input(type="button",value="Salir")
