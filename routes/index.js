@@ -3,10 +3,22 @@ var passport = require('passport');
 var Account = require('../models/account');
 var router = express.Router();
 
+var nivel = function ( dato ) {
+  return dato*2;
+
+}
+
 console.log("Node servidor se ejecuta en http://localhost:3000");
 router.get('/', function (req, res) {
-  res.render('index', { user : req.user });
+  res.render('index', { user : req.user, saludo:nivel(12) });
 });
+
+
+router.get('/nivel', function (req, res) {
+  res.send({nivel:nivel(12)});
+});
+
+
 
 router.get('/register', function(req, res) {
   res.render('register', { });

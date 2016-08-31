@@ -2,6 +2,9 @@ extends layout
 
 block content
 
+  h1#letrero
+  button#nivel(type="button") "nivel"
+
   if (!user)
     div.botonInicio
       a(href="/login")
@@ -12,3 +15,5 @@ block content
         &nbsp;&nbsp;&nbsp;&nbsp;
         a(href="/logout")
           input(type="button",value="Salir")
+  script(src='http://code.jquery.com/jquery.js')
+  script(src='/javascripts/nivel.js')
