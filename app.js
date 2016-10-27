@@ -4,10 +4,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+
 var mongoose = require('mongoose');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var flash = require('connect-flash');
+
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
@@ -42,6 +44,7 @@ passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
 // mongoose
+//mongoose.connect('mongodb://localhost/bdpruebas', function(err) {
 mongoose.connect('mongodb://localhost/passport_local_mongoose_express4', function(err) {
   if (err) {
     console.log('No se pudo conectar a MongoDB en el servidor local. Asegúrese de que ha MongoDB ejecuta en el servidor local y mongodb acepta conexiones en puertos estándar!');

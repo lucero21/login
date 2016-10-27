@@ -8,7 +8,8 @@ var Account = new Schema({
     password: String,
     edad: String,
     pais:String,
-    email: String
+    email: String,
+    score: Number
 });
 
 Account.plugin(passportLocalMongoose);
