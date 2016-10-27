@@ -29,11 +29,6 @@ if (!fs.existsSync(log_dir)){
 
 router.get('/', function(req, res, next) {
   res.render('index', { user: req.user});
-
-  //console.log("numeroooo: "+score);
-   /*if(req.user){
-    res.render('index',{user: req.user,lvl:nivel(USERS[req.user.username])});
-  }*/
 });
 router.get('/register', function(req, res) {
   res.render('register', { });
@@ -51,9 +46,7 @@ router.post('/register', function(req, res) {
 });
 
 router.get('/login', function(req, res) {
-
   res.render('login', { user : req.user });
-
 });
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/',
@@ -118,16 +111,16 @@ router.get('/IPs', function(req, res){
 router.get('/me', function(req, res){
   if(req.user){
     res.send({score:USERS[req.user.username],lvl:nivel(USERS[req.user.username])});
-   // console.log(USERS[req.user.username]);
+    // console.log(USERS[req.user.username]);
   }
 });
 
 router.get('/users', function(req, res){
   if(req.user){
     var dc=sortMapByValue(USERS);
-   res.send({userss:dc,});
-   // console.log(USERS);
-   // console.log(dc);
+    res.send({userss:dc,});
+    // console.log(USERS);
+    // console.log(dc);
   }
 
 });
@@ -157,8 +150,8 @@ router.put('/one/:chromosome/:fitness/:uuid', function(req, res){
 
     if (!req.user){
       user="anonimo";
-       //guardar el score++
-     }else {
+      //guardar el score++
+    }else {
       user=req.user.username;
       if(!USERS[user]){
         USERS[user]=1;
