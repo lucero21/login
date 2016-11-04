@@ -27,7 +27,7 @@ if (!fs.existsSync(log_dir)){
 //app.use(express.static(__dirname + '/public'));
 /* GET home page. */
 
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res) {
   res.render('index', { user: req.user});
 });
 router.get('/register', function(req, res) {
@@ -35,7 +35,7 @@ router.get('/register', function(req, res) {
 });
 router.post('/register', function(req, res) {
   var cuenta=new Account({ username : req.body.username, edad:req.body.edad, pais:req.body.pais, email: req.body.email});
-  Account.register(cuenta, req.body.password, function(err, account) {
+  Account.register(cuenta, req.body.password, function(err) {
     if (err) {
       return res.render( "register",{info: err.message});
     }
@@ -50,7 +50,7 @@ router.get('/login', function(req, res) {
 });
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/',
-  failureRedirect: 'login',
+  failureRedirect: 'login'
 }));
 router.get('/logout', function(req, res) {
   req.logout();
@@ -116,13 +116,8 @@ router.get('/me', function(req, res){
 });
 
 router.get('/users', function(req, res){
-  if(req.user){
     var dc=sortMapByValue(USERS);
-    res.send({userss:dc,});
-    // console.log(USERS);
-    // console.log(dc);
-  }
-
+    res.send({userss:dc});
 });
 
 // Retrieves the sequence number
@@ -197,7 +192,7 @@ router.put('/worker/:uuid/:popsize', function(req, res){
 
 });
 // Error check
-router.use(function(err, req, res, next){
+router.use(function(err){
   //check error information and respond accordingly
   console.error( "Exception in server ", err.stack);
 });
@@ -205,7 +200,7 @@ router.use(function(err, req, res, next){
 router.listen(router.get('port'), server_ip_address, function() {
   console.log("Node app is running at http://localhost:" + router.get('port'));
   logger.info( { "start": sequence });
-})
+});
 // Exports for tests
 
 var nivel = function ( dato ) {
@@ -222,5 +217,5 @@ var nivel = function ( dato ) {
   else if(b<=dato){
     return lvl=100;
   }
-}
+};
 module.exports = router;
