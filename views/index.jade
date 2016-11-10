@@ -1,8 +1,8 @@
 extends layout
 
 block content
-  if (user)
-    div(id="bgventana")
+
+  div(id="bgventana")
        div(id="ventana")
          a(href="javascript:desplegar('hidden');" class="close") X
          script(src="/javascripts/top.js")
@@ -25,7 +25,6 @@ block content
             if (user)
                   a(href="/logout") Log Out
           li(role='presentation')
-            if (user)
               a(href="javascript:desplegar('visible');") Top
           &nbsp;&nbsp;&nbsp;
           if (user)
