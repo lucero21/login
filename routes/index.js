@@ -192,7 +192,7 @@ router.put('/worker/:uuid/:popsize', function(req, res){
 
 });
 // Error check
-router.use(function(err){
+router.use(function(err, req, res, next){
   //check error information and respond accordingly
   console.error( "Exception in server ", err);
   console.error( "Exception in server ", err.stack);
