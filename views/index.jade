@@ -6,7 +6,6 @@ block content
        div(id="ventana")
          a(href="javascript:desplegar('hidden');" class="close") X
          script(src="/javascripts/top.js")
-         &nbsp;
          h4 Top the users
          span#dc
   div.container
@@ -26,7 +25,6 @@ block content
                   a(href="/logout") Log Out
           li(role='presentation')
               a(href="javascript:desplegar('visible');") Top
-          &nbsp;&nbsp;&nbsp;
           if (user)
               script(src="/javascripts/lvl.js")
               h4 Welcome  #{user.username},  your Score is:

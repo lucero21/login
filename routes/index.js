@@ -1,31 +1,56 @@
-var express = require('express');
-var router = express();
-var fs= require('fs');
-app= express();
+var express = require('express')
+var router = express.Router();
+var passport = require('passport');
+var Account = require('../models/account');
+// Funcion de ordenamiento blucle
+var sortMapByValue = require("../lib/sortObj");
+
+// Includes termination condition
+router.is_solution = require("../lib/is_solution.js");
+// Other configuration variables
 var winston= require('winston');
 var loggly = require('winston-loggly');
 App = require("app.json"); // Used for configuration and by Heroku
-var passport=require('passport');
-var Account = require('../models/account');
-// Funcion de ordenamiento blucle
-var sortMapByValue = require("./sortObj");
 
-// Includes termination condition
-router.is_solution = require("./is_solution.js");
-// Other configuration variables
 router.config = App.new(__dirname + "/app.json");
 /* GET home page. */
-// configure for openshift or heroku
-var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
-router.set('port', (process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 5555));
-router.set('trust proxy', true );
+
+// set up experiment sequence
+var sequence = 0;
+var temp = new Date();
+var date_str = temp.getFullYear() + "-" + (1 + temp.getMonth()) + "-"+ temp.getDate();
 var log_dir = process.env.OPENSHIFT_DATA_DIR || "log";
-if (!fs.existsSync(log_dir)){
-  fs.mkdirSync(log_dir);
+
+// create logger to console and file
+var logger = new (winston.Logger)({
+  transports: [
+    new (winston.transports.Console)( { level: 'info'} ),
+    new (winston.transports.File)({ filename: log_dir+'/nodio-'+date_str+ "-" + sequence+'.log', level: 'info' })
+  ]
+});
+
+// set up Loggly logger if it is configured by env variables
+if ( process.env.LOGGLY_TOKEN && process.env.LOGGLY_PASS && process.env.LOGGLY_USER) {
+  logger.add( winston.transports.Loggly,
+      { inputToken: process.env.LOGGLY_TOKEN ,
+        level: 'info',
+        subdomain: process.env.LOGGLY_USER,
+        json: true,
+        "auth": {
+          "username": process.env.LOGGLY_USER,
+          "password": process.env.LOGGLY_PASS
+        }
+      } );
 }
-// set up static dir
-//app.use(express.static(__dirname + '/public'));
-/* GET home page. */
+
+console.log("index");
+
+// internal variables
+var chromosomes = {};
+var IPs = {};
+var USERS={};
+var user = "anonimo";
+
 
 router.get('/', function(req, res) {
   res.render('index', { user: req.user});
@@ -57,37 +82,9 @@ router.get('/logout', function(req, res) {
   res.redirect('/');
 });
 
-// set up experiment sequence
-var sequence = 0;
-var temp = new Date();
-var date_str = temp.getFullYear() + "-" + (1 + temp.getMonth()) + "-"+ temp.getDate();
 
-// create logger to console and file
-var logger = new (winston.Logger)({
-  transports: [
-    new (winston.transports.Console)( { level: 'info'} ),
-    new (winston.transports.File)({ filename: log_dir+'/nodio-'+date_str+ "-" + sequence+'.log', level: 'info' })
-  ]
-});
 
-// set up Loggly logger if it is configured by env variables
-if ( process.env.LOGGLY_TOKEN && process.env.LOGGLY_PASS && process.env.LOGGLY_USER) {
-  logger.add( winston.transports.Loggly,
-      { inputToken: process.env.LOGGLY_TOKEN ,
-        level: 'info',
-        subdomain: process.env.LOGGLY_USER,
-        json: true,
-        "auth": {
-          "username": process.env.LOGGLY_USER,
-          "password": process.env.LOGGLY_PASS
-        }
-      } );
-}
-// internal variables
-var chromosomes = {};
-var IPs = {};
-var USERS={};
-var user = "anonimo";
+
 // Retrieves a random chromosome
 router.get('/random', function(req, res){
   if (Object.keys(chromosomes ).length > 0) {
@@ -192,16 +189,16 @@ router.put('/worker/:uuid/:popsize', function(req, res){
 
 });
 // Error check
-router.use(function(err, req, res, next){
+//router.use(function(err, req, res, next){
   //check error information and respond accordingly
-  console.error( "Exception in server ", err);
-  console.error( "Exception in server ", err.stack);
-});
+//  console.error( "Exception in server ", err);
+//  console.error( "Exception in server ", err.stack);
+//});
 // Start listening
-router.listen(router.get('port'), server_ip_address, function() {
-  console.log("Node app is running at http://localhost:" + router.get('port'));
-  logger.info( { "start": sequence });
-});
+//router.listen(router.get('port'), server_ip_address, function() {
+//  console.log("Node app is running at http://localhost:" + router.get('port'));
+//  logger.info( { "start": sequence });
+//});
 // Exports for tests
 
 var nivel = function ( dato ) {
